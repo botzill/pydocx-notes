@@ -6,6 +6,7 @@ from __future__ import (
 )
 
 from pydocx.export.html import HtmlTag
+from pydocx.export.numbering_span import NumberingItem
 from pydocx.openxml import wordprocessing
 from pydocx.util.memoize import memoized
 
@@ -13,7 +14,12 @@ from pydocx.util.memoize import memoized
 class PyDocXHTMLExporterNotesMixin(object):
     # Set here types of notes that we want to export
     NOTES_TYPES = ['note', 'warning', 'caution', 'sample']
+
+    # Tag used to wrap notes
     NOTES_WRAPPER_TAG_NAME = 'div'
+
+    # Remove <p> tag from list items
+    REMOVE_P_TAG_FROM_LISTS = True
 
     def __init__(self, *args, **kwargs):
         super(PyDocXHTMLExporterNotesMixin, self).__init__(*args, **kwargs)
@@ -81,3 +87,12 @@ class PyDocXHTMLExporterNotesMixin(object):
         tag = HtmlTag(self.NOTES_WRAPPER_TAG_NAME, **self.get_textbox_attributes(textbox))
 
         return tag.apply(results)
+
+    def get_paragraph_tag(self, paragraph):
+        """Override this method so that we remove the <p> tag from the lists items"""
+
+        if self.REMOVE_P_TAG_FROM_LISTS:
+            if isinstance(paragraph.parent, NumberingItem):
+                return
+
+        return super(PyDocXHTMLExporterNotesMixin, self).get_paragraph_tag(paragraph)
