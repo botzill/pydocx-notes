@@ -17,6 +17,7 @@ class PyDocXHTMLExporterNotesMixin(object):
 
     # Tag used to wrap notes
     NOTES_WRAPPER_TAG_NAME = 'div'
+    NOTES_FALLBACK_CLASS_NAME = 'custom'
 
     # Remove <p> tag from list items
     REMOVE_P_TAG_FROM_LISTS = True
@@ -67,7 +68,7 @@ class PyDocXHTMLExporterNotesMixin(object):
         except Exception:
             pass
 
-        return None
+        return self.NOTES_FALLBACK_CLASS_NAME
 
     def get_textbox_attributes(self, textbox):
         """Here we create the textbox attributes. Especially we create the class name for the
