@@ -9,9 +9,12 @@ from pydocx.export.html import HtmlTag
 from pydocx.export.numbering_span import NumberingItem
 from pydocx.openxml import wordprocessing
 from pydocx.util.memoize import memoized
+from pydocx_notes.numbering_span import NumberingSpanBuilder
 
 
 class PyDocXHTMLExporterNotesMixin(object):
+    numbering_span_builder_class = NumberingSpanBuilder
+
     # Set here types of notes that we want to export
     NOTES_TYPES = ['note', 'warning', 'caution', 'sample']
 
